@@ -65,7 +65,7 @@ class MainWindow(QMainWindow):
         
         # Left panel (controls)
         self.controls = ControlsPanel()
-        self.controls.setMaximumWidth(350)
+        self.controls.setFixedWidth(300)
         self.controls.load_mat_clicked.connect(self._on_load_mat)
         self.controls.load_separate_clicked.connect(self._on_load_separate)
         self.controls.run_pipeline_clicked.connect(self._on_run_pipeline)
@@ -81,14 +81,17 @@ class MainWindow(QMainWindow):
         self.metrics_panel = MetricsPanel()
         right_splitter.addWidget(self.metrics_panel)
         
-        # Set initial sizes (70% map, 30% metrics)
-        right_splitter.setSizes([700, 300])
-        
+        # Map gets ~55%, metrics ~45% — user can drag to resize
+        right_splitter.setSizes([440, 360])
+
         # Add to main layout
         main_splitter = QSplitter(Qt.Horizontal)
         main_splitter.addWidget(self.controls)
         main_splitter.addWidget(right_splitter)
-        main_splitter.setSizes([350, 1050])
+        # Controls panel fixed narrow; rest goes to the viewer
+        main_splitter.setSizes([300, 1100])
+        main_splitter.setStretchFactor(0, 0)
+        main_splitter.setStretchFactor(1, 1)
         
         main_layout.addWidget(main_splitter)
     
